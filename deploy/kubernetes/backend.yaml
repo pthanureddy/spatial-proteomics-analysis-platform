@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spatial-proteomics-backend
+  namespace: spatial-proteomics
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: spatial-proteomics-backend
+  template:
+    metadata:
+      labels:
+        app: spatial-proteomics-backend
+    spec:
+      securityContext:
+        fsGroup: 100
+      containers:
+        - name: backend
+          image: ghcr.io/example/spatial-proteomics-backend:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: spatial-proteomics-config
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: spatial-proteomics-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: spatial-proteomics
+spec:
+  selector:
+    app: spatial-proteomics-backend
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+

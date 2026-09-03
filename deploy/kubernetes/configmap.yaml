@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spatial-proteomics-config
+  namespace: spatial-proteomics
+data:
+  SPATIAL_DATABASE_PATH: /data/spatial_proteomics.sqlite3
+  SPATIAL_MAX_UPLOAD_BYTES: "5242880"
+  SPATIAL_MAX_ROWS: "100000"
+  SPATIAL_CORS_ORIGINS: ""
+

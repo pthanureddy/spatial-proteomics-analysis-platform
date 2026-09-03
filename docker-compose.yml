@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      SPATIAL_DATABASE_PATH: /data/spatial_proteomics.sqlite3
+      SPATIAL_MAX_UPLOAD_BYTES: "5242880"
+      SPATIAL_MAX_ROWS: "100000"
+      SPATIAL_CORS_ORIGINS: http://localhost:5173
+    ports:
+      - "8000:8000"
+    volumes:
+      - spatial-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:8080"
+    restart: unless-stopped
+
+volumes:
+  spatial-data:
+
