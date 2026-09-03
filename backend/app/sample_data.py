@@ -1,0 +1,18 @@
+SAMPLE_CSV = """cell_id,condition,protein_a,protein_b,proximity_score,x,y
+cell_001,control,CD3,CD4,0.62,12.0,18.4
+cell_001,control,CD3,CD8,0.31,12.0,18.4
+cell_002,control,CD3,CD4,0.58,21.5,11.2
+cell_002,control,CD4,PD1,0.24,21.5,11.2
+cell_003,control,CD3,CD8,0.44,33.2,26.8
+cell_003,control,CD8,PD1,0.19,33.2,26.8
+cell_004,control,CD3,CD4,0.67,8.1,37.5
+cell_004,control,CD4,PDL1,0.22,8.1,37.5
+cell_005,treated,CD3,CD4,0.49,15.7,44.1
+cell_005,treated,CD3,CD8,0.52,15.7,44.1
+cell_006,treated,CD3,CD8,0.61,26.9,39.0
+cell_006,treated,CD8,PD1,0.48,26.9,39.0
+cell_007,treated,CD4,PD1,0.43,38.0,31.4
+cell_007,treated,PD1,PDL1,0.57,38.0,31.4
+cell_008,treated,CD3,CD4,0.46,43.3,16.7
+cell_008,treated,PD1,PDL1,0.63,43.3,16.7
+"""
